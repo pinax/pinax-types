@@ -16,7 +16,7 @@ setup(
     description="",
     name="pinax-types",
     long_description=read("README.rst"),
-    version="0.4",
+    version="0.5",
     url="http://pinax-types.rtfd.org/",
     license="MIT",
     packages=find_packages(),
