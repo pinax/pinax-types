@@ -1,7 +1,7 @@
 import datetime
 
 from django.core.exceptions import ValidationError
-
+from django.utils import timezone
 from django.test import TestCase
 
 from pinax.types.values import VALUE_TYPES
@@ -78,6 +78,14 @@ class PeriodTests(TestCase):
         self.quarter_1 = get_period("Q-2015-1")
         self.quarter_2 = get_period("Q-2015-2")
         self.year = get_period("Y-2015")
+
+    def test_current(self):
+        period = get_period(PERIOD_TYPES["quarterly"].for_date(timezone.now()))
+        self.assertTrue(period.is_current())
+
+    def test_past(self):
+        period = get_period("M-2013-11")
+        self.assertTrue(period.is_past())
 
     def test_includes_1(self):
         self.assertTrue(self.year.includes(self.quarter_1))

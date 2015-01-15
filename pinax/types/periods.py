@@ -67,6 +67,16 @@ class Period(object):  # abstract base class
             return start <= start2 and end >= end2
         return False
 
+    def is_past(self):
+        current = self.for_date(timezone.now())
+        current_period = get_period(current)
+        return current_period > self
+
+    def is_current(self):
+        current = self.for_date(timezone.now())
+        current_period = get_period(current)
+        return current_period == self
+
     @classmethod
     def validate(cls, period):
         regex = "^{}-".format(cls.prefix) + cls.validation_regex
