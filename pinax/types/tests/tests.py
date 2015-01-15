@@ -79,6 +79,19 @@ class PeriodTests(TestCase):
         self.quarter_2 = get_period("Q-2015-2")
         self.year = get_period("Y-2015")
 
+    def test_includes_1(self):
+        self.assertTrue(self.year.includes(self.quarter_1))
+        self.assertTrue(self.year.includes(self.quarter_2))
+
+    def test_includes_2(self):
+        self.assertFalse(self.quarter_1.includes(self.year))
+
+    def test_includes_3(self):
+        self.assertFalse(self.quarter_1.includes(self.quarter_2))
+
+    def test_includes_4(self):
+        self.assertTrue(self.quarter_1.includes(get_period("Q-2015-1")))
+
     def test_validate_random_string(self):
         with self.assertRaises(ValidationError):
             validate("Patrick")

@@ -42,9 +42,11 @@ given).
 
 class Period(object):  # abstract base class
 
+    prefix = None
     validation_regex = r".*"
     minimum = None
     maximum = None
+    contains = []
 
     def __init__(self, raw_value):
         self.validate(raw_value)
@@ -52,6 +54,18 @@ class Period(object):  # abstract base class
 
     def __str__(self):
         return self.raw_value
+
+    def includes(self, period):
+        """
+        quarter.includes(month) : True|False
+        """
+        if self == period:
+            return True
+        if period.prefix in self.contains:
+            start, end = self.start_end(self.raw_value)
+            start2, end2 = period.start_end(period.raw_value)
+            return start <= start2 and end >= end2
+        return False
 
     @classmethod
     def validate(cls, period):
@@ -152,6 +166,7 @@ class QuarterlyPeriod(Period):
     validation_regex = r"\d{4}-(\d{1})$"
     minimum = 1
     maximum = 4
+    contains = ["M", "W"]
 
     @classmethod
     def from_parts(cls, year, quarter):
@@ -203,6 +218,7 @@ class MonthlyPeriod(Period):
     validation_regex = r"\d{4}-(\d{2})$"
     minimum = 1
     maximum = 12
+    contains = ["W"]
 
     @classmethod
     def for_date(cls, date):
@@ -246,6 +262,7 @@ class YearlyPeriod(Period):
 
     prefix = "Y"
     validation_regex = r"\d{4}$"
+    contains = ["Q", "M", "W"]
 
     @classmethod
     def for_date(cls, date):
