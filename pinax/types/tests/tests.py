@@ -74,9 +74,68 @@ class ValueTypesTests(TestCase):
 
 class PeriodTests(TestCase):
 
+    def setUp(self):
+        self.quarter_1 = get_period("Q-2015-1")
+        self.quarter_2 = get_period("Q-2015-2")
+        self.year = get_period("Y-2015")
+
     def test_validate_random_string(self):
         with self.assertRaises(ValidationError):
             validate("Patrick")
+
+    def test_equality_true(self):
+        self.assertTrue(self.quarter_1 == get_period("Q-2015-1"))
+
+    def test_equality_false_1(self):
+        self.assertFalse(self.quarter_1 == self.quarter_2)
+
+    def test_equality_false_2(self):
+        self.assertFalse(self.quarter_1 == self.year)
+
+    def test_non_equality_false(self):
+        self.assertFalse(self.quarter_1 != get_period("Q-2015-1"))
+
+    def test_non_equality_true_1(self):
+        self.assertTrue(self.quarter_1 != self.quarter_2)
+
+    def test_non_equality_true_2(self):
+        self.assertTrue(self.quarter_1 != self.year)
+
+    def test_less_than_true(self):
+        self.assertTrue(self.quarter_1 < self.quarter_2)
+
+    def test_less_than_false_1(self):
+        self.assertFalse(self.quarter_2 < self.quarter_1)
+
+    def test_less_than_false_2(self):
+        self.assertFalse(self.quarter_1 < self.year)
+
+    def test_greater_than_true(self):
+        self.assertTrue(self.quarter_2 > self.quarter_1)
+
+    def test_greater_than_false_1(self):
+        self.assertFalse(self.quarter_1 > self.quarter_2)
+
+    def test_greater_than_false_2(self):
+        self.assertFalse(self.quarter_1 > self.year)
+
+    def test_less_than_or_equal_true(self):
+        self.assertTrue(self.quarter_1 <= self.quarter_2)
+
+    def test_less_than_or_equal_false_1(self):
+        self.assertFalse(self.quarter_2 <= self.quarter_1)
+
+    def test_less_than_or_equal_false_2(self):
+        self.assertFalse(self.quarter_1 <= self.year)
+
+    def test_greater_than_or_equal_true(self):
+        self.assertTrue(self.quarter_2 >= self.quarter_1)
+
+    def test_greater_than_or_equal_false_1(self):
+        self.assertFalse(self.quarter_1 >= self.quarter_2)
+
+    def test_greater_than_or_equal_false_2(self):
+        self.assertFalse(self.quarter_1 >= self.year)
 
     def test_parse_week_1(self):
         self.assertEquals(parse("2015-W03"), "W-2015-03")
@@ -126,7 +185,7 @@ class PeriodTests(TestCase):
 
     def test_get_period_str(self):
         period = get_period("M-2015-01")
-        self.assertEquals(str(period), "1 2015")  # @@@ see note in display method about switching to month name
+        self.assertEquals(str(period), "M-2015-01")
 
     def test_get_period_validation(self):
         with self.assertRaises(ValidationError):

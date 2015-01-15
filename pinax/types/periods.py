@@ -72,6 +72,25 @@ class Period(object):  # abstract base class
                     "Incorrect value: {0}".format(period)
                 )
 
+    def __eq__(self, other):
+        return type(self) == type(other) and self.raw_value == other.raw_value
+
+    def __ne__(self, other):
+        return type(self) != type(other) or self.raw_value != other.raw_value
+
+    def __lt__(self, other):
+        # @@@ we might want to be smart and be able to do things like "Q-2014-Q4" < "Y-2015"
+        return type(self) == type(other) and self.raw_value < other.raw_value
+
+    def __gt__(self, other):
+        return type(self) == type(other) and self.raw_value > other.raw_value
+
+    def __le__(self, other):
+        return type(self) == type(other) and self.raw_value <= other.raw_value
+
+    def __ge__(self, other):
+        return type(self) == type(other) and self.raw_value >= other.raw_value
+
 
 class WeeklyPeriod(Period):
 
