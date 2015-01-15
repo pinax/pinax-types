@@ -38,11 +38,18 @@ given).
 """
 
 
-class PeriodType(object):  # abstract base class
+class Period(object):  # abstract base class
 
     validation_regex = r".*"
     minimum = None
     maximum = None
+
+    def __init__(self, raw_value):
+        self.validate(raw_value)
+        self.raw_value = raw_value
+
+    def __str__(self):
+        return self.display(self.raw_value)
 
     @classmethod
     def validate(cls, period):
@@ -64,7 +71,7 @@ class PeriodType(object):  # abstract base class
                 )
 
 
-class WeeklyPeriodType(PeriodType):
+class WeeklyPeriod(Period):
 
     prefix = "W"
     validation_regex = r"\d{4}-(\d{2})$"
@@ -114,7 +121,7 @@ class WeeklyPeriodType(PeriodType):
         return iso_week_to_gregorian(year, week).strftime("Week of %b %d, %Y")
 
 
-class QuarterlyPeriodType(PeriodType):
+class QuarterlyPeriod(Period):
 
     prefix = "Q"
     validation_regex = r"\d{4}-(\d{1})$"
@@ -161,7 +168,7 @@ class QuarterlyPeriodType(PeriodType):
         return "{}Q{}".format(year, quarter)
 
 
-class MonthlyPeriodType(PeriodType):
+class MonthlyPeriod(Period):
 
     prefix = "M"
     validation_regex = r"\d{4}-(\d{2})$"
@@ -206,7 +213,7 @@ class MonthlyPeriodType(PeriodType):
         return "{} {}".format(month, year)  # @@@ month name
 
 
-class YearlyPeriodType(PeriodType):
+class YearlyPeriod(Period):
 
     prefix = "Y"
     validation_regex = r"\d{4}$"
@@ -241,10 +248,10 @@ class YearlyPeriodType(PeriodType):
 
 
 PERIOD_TYPES = {
-    "weekly": WeeklyPeriodType,
-    "quarterly": QuarterlyPeriodType,
-    "monthly": MonthlyPeriodType,
-    "yearly": YearlyPeriodType
+    "weekly": WeeklyPeriod,
+    "quarterly": QuarterlyPeriod,
+    "monthly": MonthlyPeriod,
+    "yearly": YearlyPeriod
 }
 
 
@@ -252,6 +259,12 @@ PERIOD_PREFIXES = {
     period_type_class.prefix: period_type_class
     for period_type_class in PERIOD_TYPES.values()
 }
+
+
+def get_period(raw_value):
+    if raw_value[0] not in PERIOD_PREFIXES:
+        raise ValidationError("invalid prefix in {}".format(raw_value))
+    return PERIOD_PREFIXES[raw_value[0]](raw_value)
 
 
 def period_for_date(period_type, date=None):

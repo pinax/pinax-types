@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from pinax.types.values import VALUE_TYPES
-from pinax.types.periods import PERIOD_TYPES, period_for_date, period_range, period_display, period_start_end
+from pinax.types.periods import PERIOD_TYPES, get_period, period_for_date, period_range, period_display, period_start_end
 
 
 class ValueTypesTests(TestCase):
@@ -72,7 +72,15 @@ class ValueTypesTests(TestCase):
         self.assertEquals(VALUE_TYPES["traffic-light"].display(1), "red")
 
 
-class PeriodTypesTests(TestCase):
+class PeriodTests(TestCase):
+
+    def test_get_period_str(self):
+        period = get_period("M-2015-01")
+        self.assertEquals(str(period), "1 2015")  # @@@ see note in display method about switching to month name
+
+    def test_get_period_validation(self):
+        with self.assertRaises(ValidationError):
+            get_period("2013W22")
 
     def test_weekly_period_type_raises_error_wrong_format(self):
         with self.assertRaises(ValidationError):
