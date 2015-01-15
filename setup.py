@@ -25,6 +25,10 @@ setup(
     },
     test_suite="runtests.runtests",
     tests_require=[
+        "python-dateutil>=2.4.0"
+    ],
+    install_required=[
+        "python-dateutil>=2.4.0"
     ],
     classifiers=[
         "Development Status :: 4 - Beta",

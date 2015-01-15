@@ -5,6 +5,8 @@ import re
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
+from dateutil.parser import parse as dateutil_parse
+
 
 """
 Period Types define different periods over which metrics can apply, e.g. weeks,
@@ -79,10 +81,14 @@ class WeeklyPeriod(Period):
     maximum = 53
 
     @classmethod
+    def from_parts(cls, year, week):
+        return "{}-{:d}-{:02d}".format(cls.prefix, int(year), int(week))
+
+    @classmethod
     def for_date(cls, date):
         year = date.isocalendar()[0]
         week = date.isocalendar()[1]
-        return "{}-{:d}-{:02d}".format(cls.prefix, year, week)
+        return cls.from_parts(year, week)
 
     @classmethod
     def start_end(cls, period):
@@ -129,9 +135,13 @@ class QuarterlyPeriod(Period):
     maximum = 4
 
     @classmethod
+    def from_parts(cls, year, quarter):
+        return "{}-{:d}-{:d}".format(cls.prefix, int(year), int(quarter))
+
+    @classmethod
     def for_date(cls, date):
         quarter = 1 + (date.month - 1) // 3
-        return "{}-{:d}-{:d}".format(cls.prefix, date.year, quarter)
+        return cls.from_parts(date.year, quarter)
 
     @classmethod
     def start_end(cls, period):
@@ -259,6 +269,40 @@ PERIOD_PREFIXES = {
     period_type_class.prefix: period_type_class
     for period_type_class in PERIOD_TYPES.values()
 }
+
+
+def parse(value):
+    """
+    Convert:
+
+    * 2015-W3, 2015-W03, 2015W03, 2015W3 ==> W-2015-03
+    * 1/2015, 01/2015, Jan 2015, January 2015 ==> M-2015-01
+    * 2015Q1 ==> Q-2015-1
+    * 2015 ==> Y-2015
+    """
+    result = None
+    if len(value) in [6, 7, 8] and value[:4].isdigit() and "W" in value and value.index("W") in [4, 5] and value[value.index("W") + 1:].isdigit():
+        year, week = value[:4], value[value.index("W") + 1:]
+        result = WeeklyPeriod.from_parts(year, week)
+    elif len(value) == 6 and value[:4].isdigit() and value[4].lower() == "q" and value[5].isdigit():
+        year, quarter = value[:4], value[5]
+        result = QuarterlyPeriod.from_parts(year, quarter)
+    elif len(value) == 4 and value.isdigit():
+        result = YearlyPeriod.for_date(dateutil_parse(value))
+    else:
+        try:
+            result = MonthlyPeriod.for_date(dateutil_parse(value))
+        except ValueError:
+            pass
+    if result:
+        validate(result)
+    return result
+
+
+def validate(raw_value):
+    if raw_value[0] not in PERIOD_PREFIXES:
+        raise ValidationError("invalid prefix in {}".format(raw_value))
+    return PERIOD_PREFIXES[raw_value[0]].validate(raw_value)
 
 
 def get_period(raw_value):

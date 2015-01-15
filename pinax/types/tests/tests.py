@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from pinax.types.values import VALUE_TYPES
-from pinax.types.periods import PERIOD_TYPES, get_period, period_for_date, period_range, period_display, period_start_end
+from pinax.types.periods import PERIOD_TYPES, validate, parse, get_period, period_for_date, period_range, period_display, period_start_end
 
 
 class ValueTypesTests(TestCase):
@@ -73,6 +73,56 @@ class ValueTypesTests(TestCase):
 
 
 class PeriodTests(TestCase):
+
+    def test_validate_random_string(self):
+        with self.assertRaises(ValidationError):
+            validate("Patrick")
+
+    def test_parse_week_1(self):
+        self.assertEquals(parse("2015-W03"), "W-2015-03")
+
+    def test_parse_week_2(self):
+        self.assertEquals(parse("2015-W3"), "W-2015-03")
+
+    def test_parse_week_3(self):
+        self.assertEquals(parse("2015W03"), "W-2015-03")
+
+    def test_parse_week_4(self):
+        self.assertEquals(parse("2015W3"), "W-2015-03")
+
+    def test_parse_month_1(self):
+        self.assertEquals(parse("jan 2015"), "M-2015-01")
+
+    def test_parse_month_2(self):
+        self.assertEquals(parse("Jan 2015"), "M-2015-01")
+
+    def test_parse_month_3(self):
+        self.assertEquals(parse("January 2015"), "M-2015-01")
+
+    def test_parse_month_4(self):
+        self.assertEquals(parse("1/2015"), "M-2015-01")
+
+    def test_parse_month_5(self):
+        self.assertEquals(parse("01/2015"), "M-2015-01")
+
+    def test_parse_month_6(self):
+        self.assertEquals(parse("2015 January"), "M-2015-01")
+
+    def test_parse_quarter_1(self):
+        self.assertEquals(parse("2015Q1"), "Q-2015-1")
+
+    def test_parse_quarter_2(self):
+        self.assertEquals(parse("2015Q1"), "Q-2015-1")
+
+    def test_parse_quarter_3(self):
+        with self.assertRaises(ValidationError):
+            self.assertEquals(parse("2015Q5"), "Q-2015-5")
+
+    def test_parse_year_1(self):
+        self.assertEquals(parse("2015"), "Y-2015")
+
+    def test_parse_invalid(self):
+        self.assertIsNone(parse("Patrick"))
 
     def test_get_period_str(self):
         period = get_period("M-2015-01")
