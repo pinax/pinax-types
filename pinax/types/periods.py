@@ -51,7 +51,7 @@ class Period(object):  # abstract base class
         self.raw_value = raw_value
 
     def __str__(self):
-        return self.display(self.raw_value)
+        return self.raw_value
 
     @classmethod
     def validate(cls, period):
