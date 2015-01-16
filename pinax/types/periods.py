@@ -1,9 +1,9 @@
 import calendar
 import datetime
+import operator
 import re
 
 from django.core.exceptions import ValidationError
-from django.utils import timezone
 
 from dateutil.parser import parse as dateutil_parse
 
@@ -67,13 +67,53 @@ class Period(object):  # abstract base class
             return start <= start2 and end >= end2
         return False
 
+    def sub_periods(self, period_type):
+        self.validate_can_contain_type(period_type)
+        periods = []
+        if self.is_period_type(period_type):
+            periods.append(get_period(self.raw_value))
+        klass = PERIOD_TYPES[period_type]
+        start, end = self.get_start_end()
+        start, end = klass.for_date(start), klass.for_date(end)
+        for period_raw in klass.range(start, end, inclusive=True):
+            periods.append(get_period(period_raw))
+        return periods
+
+    def validate_can_contain_type(self, period_type):
+        valids = [x.upper() for x in (self.contains + [self.prefix])]
+        if period_type[0].upper() not in valids:
+            raise ValidationError(
+                "Periods of the type {} cannot exist within {}".format(
+                    period_type,
+                    ", ".join(valids)
+                )
+            )
+
+    def is_period_type(self, period_type):
+        return period_type[0].upper() == self.prefix.upper()
+
+    def validate_for(self, period_type):
+        if not self.is_period_type(period_type):
+            raise ValidationError(
+                "{} is must match this period's ({}) type".format(
+                    period_type,
+                    self.get_display()
+                )
+            )
+
+    def get_start_end(self):
+        return self.start_end(self.raw_value)
+
+    def get_display(self):
+        return self.display(self.raw_value)
+
     def is_past(self):
-        current = self.for_date(timezone.now())
+        current = self.for_date(datetime.datetime.now())
         current_period = get_period(current)
         return current_period > self
 
     def is_current(self):
-        current = self.for_date(timezone.now())
+        current = self.for_date(datetime.datetime.now())
         current_period = get_period(current)
         return current_period == self
 
@@ -142,7 +182,7 @@ class WeeklyPeriod(Period):
         return start, end
 
     @classmethod
-    def range(cls, start, stop):
+    def range(cls, start, stop, inclusive=False):
         cls.validate(start)
         cls.validate(stop)
         year_start = int(start[2:6])
@@ -151,7 +191,8 @@ class WeeklyPeriod(Period):
         week_stop = int(stop[7:])
         year = year_start
         week = week_start
-        while (year, week) < (year_stop, week_stop):
+        op = operator.le if inclusive else operator.lt
+        while op((year, week), (year_stop, week_stop)):
             yield "{}-{:d}-{:02d}".format(cls.prefix, year, week)
             week += 1
             if datetime.date(year, 12, 31).isocalendar()[1] == 53:
@@ -198,7 +239,7 @@ class QuarterlyPeriod(Period):
         return start, end
 
     @classmethod
-    def range(cls, start, stop):
+    def range(cls, start, stop, inclusive=False):
         cls.validate(start)
         cls.validate(stop)
         year_start = int(start[2:6])
@@ -207,7 +248,8 @@ class QuarterlyPeriod(Period):
         quarter_stop = int(stop[7])
         year = year_start
         quarter = quarter_start
-        while (year, quarter) < (year_stop, quarter_stop):
+        op = operator.le if inclusive else operator.lt
+        while op((year, quarter), (year_stop, quarter_stop)):
             yield "{}-{:d}-{:d}".format(cls.prefix, year, quarter)
             quarter += 1
             if quarter == 5:
@@ -244,7 +286,7 @@ class MonthlyPeriod(Period):
         return start, end
 
     @classmethod
-    def range(cls, start, stop):
+    def range(cls, start, stop, inclusive=False):
         cls.validate(start)
         cls.validate(stop)
         year_start = int(start[2:6])
@@ -253,7 +295,8 @@ class MonthlyPeriod(Period):
         month_stop = int(stop[7:])
         year = year_start
         month = month_start
-        while (year, month) < (year_stop, month_stop):
+        op = operator.le if inclusive else operator.lt
+        while op((year, month), (year_stop, month_stop)):
             yield "{}-{:d}-{:02d}".format(cls.prefix, year, month)
             month += 1
             if month == 13:
@@ -265,7 +308,7 @@ class MonthlyPeriod(Period):
     def display(cls, period):
         year = int(period[2:6])
         month = int(period[7:])
-        return "{} {}".format(month, year)  # @@@ month name
+        return datetime.date(year, month, 1).strftime("%B %Y")
 
 
 class YearlyPeriod(Period):
@@ -286,13 +329,14 @@ class YearlyPeriod(Period):
         return start, end
 
     @classmethod
-    def range(cls, start, stop):
+    def range(cls, start, stop, inclusive=False):
         cls.validate(start)
         cls.validate(stop)
         year_start = int(start[2:])
         year_stop = int(stop[2:])
         year = year_start
-        while year < year_stop:
+        op = operator.le if inclusive else operator.lt
+        while op(year, year_stop):
             yield "{}-{:d}".format(cls.prefix, year)
             year += 1
         raise StopIteration()
@@ -302,6 +346,13 @@ class YearlyPeriod(Period):
         year = int(period[2:])
         return "{}".format(year)
 
+
+PREFIXES = {
+    "W": WeeklyPeriod,
+    "M": MonthlyPeriod,
+    "Q": QuarterlyPeriod,
+    "Y": YearlyPeriod
+}
 
 PERIOD_TYPES = {
     "weekly": WeeklyPeriod,
@@ -352,6 +403,8 @@ def validate(raw_value):
 
 
 def get_period(raw_value):
+    if not raw_value:
+        return
     if raw_value[0] not in PERIOD_PREFIXES:
         raise ValidationError("invalid prefix in {}".format(raw_value))
     return PERIOD_PREFIXES[raw_value[0]](raw_value)
@@ -363,7 +416,7 @@ def period_for_date(period_type, date=None):
     if no second arg)
     """
     if date is None:
-        date = timezone.now().date()
+        date = datetime.datetime.now().date()
     return PERIOD_TYPES[period_type].for_date(date)
 
 
@@ -374,7 +427,7 @@ def period_start_end(period):
     return PERIOD_PREFIXES[period[0]].start_end(period)
 
 
-def period_range(start, stop):
+def period_range(start, stop, inclusive=False):
     """
     yields the periods from start to (but not including) stop.
 
@@ -383,7 +436,7 @@ def period_range(start, stop):
     """
     if start[0] != stop[0]:
         raise ValidationError("start and stop must be of same period type")
-    return PERIOD_PREFIXES[start[0]].range(start, stop)
+    return PERIOD_PREFIXES[start[0]].range(start, stop, inclusive)
 
 
 def period_display(period):

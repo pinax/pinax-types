@@ -79,6 +79,96 @@ class PeriodTests(TestCase):
         self.quarter_2 = get_period("Q-2015-2")
         self.year = get_period("Y-2015")
 
+    def test_quarterly_sub_periods_monthly_all(self):
+        periods = self.quarter_1.sub_periods("monthly")
+        self.assertEquals(len(periods), 3)
+        self.assertEquals(periods[0].get_display(), "January 2015")
+        self.assertEquals(periods[1].get_display(), "February 2015")
+        self.assertEquals(periods[2].get_display(), "March 2015")
+
+    def test_quarterly_sub_periods_weekly_all(self):
+        periods = self.quarter_1.sub_periods("weekly")
+        self.assertEquals(len(periods), 14)
+        self.assertEquals(periods[0].raw_value, "W-2015-01")
+        self.assertEquals(periods[1].raw_value, "W-2015-02")
+        self.assertEquals(periods[2].raw_value, "W-2015-03")
+        self.assertEquals(periods[3].raw_value, "W-2015-04")
+        self.assertEquals(periods[4].raw_value, "W-2015-05")
+        self.assertEquals(periods[5].raw_value, "W-2015-06")
+        self.assertEquals(periods[6].raw_value, "W-2015-07")
+        self.assertEquals(periods[7].raw_value, "W-2015-08")
+        self.assertEquals(periods[8].raw_value, "W-2015-09")
+        self.assertEquals(periods[9].raw_value, "W-2015-10")
+        self.assertEquals(periods[10].raw_value, "W-2015-11")
+        self.assertEquals(periods[11].raw_value, "W-2015-12")
+        self.assertEquals(periods[12].raw_value, "W-2015-13")
+        self.assertEquals(periods[13].raw_value, "W-2015-14")
+
+    def test_yearly_sub_periods_quarterly_all(self):
+        periods = get_period("Y-2015").sub_periods("quarterly")
+        self.assertEquals(len(periods), 4)
+        self.assertEquals(periods[0].raw_value, "Q-2015-1")
+        self.assertEquals(periods[1].raw_value, "Q-2015-2")
+        self.assertEquals(periods[2].raw_value, "Q-2015-3")
+        self.assertEquals(periods[3].raw_value, "Q-2015-4")
+
+    def test_yearly_sub_periods_monthly_all(self):
+        periods = get_period("Y-2015").sub_periods("monthly")
+        self.assertEquals(len(periods), 12)
+        self.assertEquals(periods[0].get_display(), "January 2015")
+        self.assertEquals(periods[1].get_display(), "February 2015")
+        self.assertEquals(periods[2].get_display(), "March 2015")
+        self.assertEquals(periods[3].get_display(), "April 2015")
+        self.assertEquals(periods[4].get_display(), "May 2015")
+        self.assertEquals(periods[5].get_display(), "June 2015")
+        self.assertEquals(periods[6].get_display(), "July 2015")
+        self.assertEquals(periods[7].get_display(), "August 2015")
+        self.assertEquals(periods[8].get_display(), "September 2015")
+        self.assertEquals(periods[9].get_display(), "October 2015")
+        self.assertEquals(periods[10].get_display(), "November 2015")
+        self.assertEquals(periods[11].get_display(), "December 2015")
+
+    def test_yearly_sub_periods_weekly_all(self):
+        periods = get_period("Y-2015").sub_periods("weekly")
+        self.assertEquals(len(periods), 53)
+        for i in range(53):
+            self.assertEquals(periods[i].raw_value, "W-2015-{:02d}".format(i + 1))
+
+    def test_monthly_sub_periods_weekly_all(self):
+        periods = get_period("M-2015-01").sub_periods("weekly")
+        self.assertEquals(len(periods), 5)
+        for i in range(5):
+            self.assertEquals(periods[i].raw_value, "W-2015-{:02d}".format(i + 1))
+
+    def test_validate_for_pass(self):
+        try:
+            self.quarter_1.validate_for("quarterly")
+        except ValidationError:
+            self.fail()
+
+    def test_validate_for_fail(self):
+        with self.assertRaises(ValidationError):
+            self.quarter_1.validate_for("weekly")
+
+    def test_validate_can_contain_type_pass_1(self):
+        try:
+            self.quarter_1.validate_can_contain_type("quarterly")
+        except ValidationError:
+            self.fail()
+
+    def test_validate_can_contain_type_pass_2(self):
+        try:
+            self.quarter_1.validate_can_contain_type("weekly")
+        except ValidationError:
+            self.fail()
+
+    def test_validate_can_contain_type_faik(self):
+        with self.assertRaises(ValidationError):
+            self.quarter_1.validate_can_contain_type("yearly")
+
+    def test_get_display(self):
+        self.assertEquals(get_period("M-2015-04").get_display(), "April 2015")
+
     def test_current(self):
         period = get_period(PERIOD_TYPES["quarterly"].for_date(timezone.now()))
         self.assertTrue(period.is_current())
@@ -287,14 +377,29 @@ class PeriodTests(TestCase):
         self.assertEquals(list(period_range("W-2015-50", "W-2016-03")), ["W-2015-50", "W-2015-51", "W-2015-52", "W-2015-53", "W-2016-01", "W-2016-02"])
         self.assertEquals(list(period_range("W-2016-50", "W-2017-03")), ["W-2016-50", "W-2016-51", "W-2016-52", "W-2017-01", "W-2017-02"])
 
+    def test_weekly_period_inclusive_range(self):
+        self.assertEquals(list(period_range("W-2012-50", "W-2013-03", inclusive=True)), ["W-2012-50", "W-2012-51", "W-2012-52", "W-2013-01", "W-2013-02", "W-2013-03"])
+        self.assertEquals(list(period_range("W-2014-50", "W-2015-03", inclusive=True)), ["W-2014-50", "W-2014-51", "W-2014-52", "W-2015-01", "W-2015-02", "W-2015-03"])
+        self.assertEquals(list(period_range("W-2015-50", "W-2016-03", inclusive=True)), ["W-2015-50", "W-2015-51", "W-2015-52", "W-2015-53", "W-2016-01", "W-2016-02", "W-2016-03"])
+        self.assertEquals(list(period_range("W-2016-50", "W-2017-03", inclusive=True)), ["W-2016-50", "W-2016-51", "W-2016-52", "W-2017-01", "W-2017-02", "W-2017-03"])
+
     def test_monthly_period_range(self):
         self.assertEquals(list(period_range("M-2012-11", "M-2013-03")), ["M-2012-11", "M-2012-12", "M-2013-01", "M-2013-02"])
+
+    def test_monthly_period_inclusive_range(self):
+        self.assertEquals(list(period_range("M-2012-11", "M-2013-03", inclusive=True)), ["M-2012-11", "M-2012-12", "M-2013-01", "M-2013-02", "M-2013-03"])
 
     def test_quarterly_period_range(self):
         self.assertEquals(list(period_range("Q-2012-3", "Q-2013-2")), ["Q-2012-3", "Q-2012-4", "Q-2013-1"])
 
+    def test_quarterly_period_inclusive_range(self):
+        self.assertEquals(list(period_range("Q-2012-3", "Q-2013-2", inclusive=True)), ["Q-2012-3", "Q-2012-4", "Q-2013-1", "Q-2013-2"])
+
     def test_yearly_period_range(self):
         self.assertEquals(list(period_range("Y-2010", "Y-2013")), ["Y-2010", "Y-2011", "Y-2012"])
+
+    def test_yearly_period_range_inclusive(self):
+        self.assertEquals(list(period_range("Y-2010", "Y-2013", inclusive=True)), ["Y-2010", "Y-2011", "Y-2012", "Y-2013"])
 
     def test_period_range_mismatched_types(self):
         with self.assertRaises(ValidationError):
@@ -304,7 +409,7 @@ class PeriodTests(TestCase):
         self.assertEquals(period_display("Y-2013"), "2013")
 
     def test_monthly_period_type_display(self):
-        self.assertEquals(period_display("M-2013-08"), "8 2013")  # @@@
+        self.assertEquals(period_display("M-2013-08"), "August 2013")
 
     def test_quarterly_period_type_display(self):
         self.assertEquals(period_display("Q-2013-3"), "2013Q3")
