@@ -42,10 +42,11 @@ class PeriodField(with_metaclass(models.SubfieldBase, models.CharField)):
             return value
         return get_period(value)
 
-    def get_db_prep_value(self, value, connection, prepared=False):
-        if self.null and value is None:
-            return None
-        return value.raw_value
+    def get_prep_value(self, value):
+        value = super(PeriodField, self).get_prep_value(value)
+        if isinstance(value, Period):
+            value = value.raw_value
+        return value
 
     def clean(self, value, model_instance):
         value = self.to_python(value)

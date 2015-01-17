@@ -20,6 +20,13 @@ pinax-types
 Welcome to the documentation for pinax-types!
 
 
+Install
+-------
+::
+
+    $ pip install python-dateutil pinax-types
+
+
 Running the Tests
 ------------------------------------
 
