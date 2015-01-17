@@ -95,8 +95,8 @@ class Period(object):  # abstract base class
     def validate_for(self, period_type):
         if not self.is_period_type(period_type):
             raise ValidationError(
-                "{} is must match this period's ({}) type".format(
-                    period_type,
+                "{} must match this period's ({}) type".format(
+                    period_type.title(),
                     self.get_display()
                 )
             )
@@ -403,8 +403,6 @@ def validate(raw_value):
 
 
 def get_period(raw_value):
-    if not raw_value:
-        return
     if raw_value[0] not in PERIOD_PREFIXES:
         raise ValidationError("invalid prefix in {}".format(raw_value))
     return PERIOD_PREFIXES[raw_value[0]](raw_value)
