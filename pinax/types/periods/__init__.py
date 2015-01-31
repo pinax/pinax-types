@@ -107,15 +107,19 @@ class Period(object):  # abstract base class
     def get_display(self):
         return self.display(self.raw_value)
 
+    @classmethod
+    def current_period(cls):
+        current = cls.for_date(datetime.datetime.now())
+        return get_period(current)
+
     def is_past(self):
-        current = self.for_date(datetime.datetime.now())
-        current_period = get_period(current)
-        return current_period > self
+        return self.current_period() > self
 
     def is_current(self):
-        current = self.for_date(datetime.datetime.now())
-        current_period = get_period(current)
-        return current_period == self
+        return self.current_period() == self
+
+    def is_future(self):
+        return self.current_period() < self
 
     @classmethod
     def validate(cls, period):
