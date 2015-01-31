@@ -29,7 +29,7 @@ class PeriodField(with_metaclass(models.SubfieldBase, models.CharField)):
     description = "A valid period from pinax-types"
 
     def __init__(self, *args, **kwargs):
-        kwargs["max_length"] = 12
+        kwargs["max_length"] = 50
         super(PeriodField, self).__init__(*args, **kwargs)
 
     def deconstruct(self):
