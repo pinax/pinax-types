@@ -20,7 +20,7 @@ class PeriodFormField(forms.CharField):
         # * 2015 ==> Y-2015
         parsed_value = parse(value)
         if parsed_value is None:
-            raise ValidationError("Invalid format: {}".format(value))
+            raise ValidationError("Cannot Parse: {}".format(value))
         return parsed_value
 
 
