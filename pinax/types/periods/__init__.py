@@ -365,6 +365,12 @@ PERIOD_TYPES = {
     "yearly": YearlyPeriod
 }
 
+PERIOD_TYPE_CHOICES = [
+    ("weekly", "Weekly"),
+    ("monthly", "Monthly"),
+    ("quarterly", "Quarterly"),
+    ("yearly", "Yearly")
+]
 
 PERIOD_PREFIXES = {
     period_type_class.prefix: period_type_class
