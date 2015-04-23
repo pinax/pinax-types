@@ -1,6 +1,6 @@
 from django import forms
 from django.db import models
-from django.forms.util import ValidationError
+from django.forms.utils import ValidationError
 from django.utils.six import with_metaclass
 
 from . import Period, get_period, parse
