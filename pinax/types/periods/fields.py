@@ -1,7 +1,6 @@
 from django import forms
 from django.db import models
 from django.forms.utils import ValidationError
-from django.utils.six import with_metaclass
 
 from . import Period, get_period, parse
 
@@ -24,7 +23,7 @@ class PeriodFormField(forms.CharField):
         return parsed_value
 
 
-class PeriodField(with_metaclass(models.SubfieldBase, models.CharField)):
+class PeriodField(models.CharField):
 
     description = "A valid period from pinax-types"
 
@@ -36,6 +35,11 @@ class PeriodField(with_metaclass(models.SubfieldBase, models.CharField)):
         name, path, args, kwargs = super(PeriodField, self).deconstruct()
         del kwargs["max_length"]
         return name, path, args, kwargs
+
+    def from_db_value(self, value, expression, connection, context):
+        if not value:
+            return value
+        return get_period(value)
 
     def to_python(self, value):
         if isinstance(value, Period) or not value:
