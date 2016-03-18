@@ -15,7 +15,7 @@ Pinax Types
 .. image:: https://img.shields.io/pypi/v/pinax-types.svg
     :target:  https://pypi.python.org/pypi/pinax-types/
 
-.. image:: https://img.shields.io/badge/license-<license>-blue.svg
+.. image:: https://img.shields.io/badge/license-MIT-blue.svg
     :target:  https://pypi.python.org/pypi/pinax-types/
 
 
