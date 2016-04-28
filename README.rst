@@ -47,7 +47,10 @@ Running the Tests
 Documentation
 --------------
 
-The ``pinax-types`` documentation is currently under construction. If you would like to help us write documentation, please join our Pinax Project Slack team and let us know! The Pinax documentation is available at http://pinaxproject.com/pinax/.
+The ``pinax-types`` documentation is currently under construction. If you would like to help us write documentation, please join our Pinax Project Slack team and let us know! 
+We recently did a Pinax Hangout on ``pinax-types``, you can read the recap blog post and find the video here http://blog.pinaxproject.com/2016/04/28/recap-april-pinax-hangout/
+
+The Pinax documentation is available at http://pinaxproject.com/pinax/.
 
 
 Contribute
