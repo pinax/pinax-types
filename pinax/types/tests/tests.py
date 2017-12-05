@@ -1,11 +1,20 @@
 import datetime
 
 from django.core.exceptions import ValidationError
-from django.utils import timezone
 from django.test import TestCase
+from django.utils import timezone
 
+from pinax.types.periods import (
+    PERIOD_TYPES,
+    get_period,
+    parse,
+    period_display,
+    period_for_date,
+    period_range,
+    period_start_end,
+    validate
+)
 from pinax.types.values import VALUE_TYPES
-from pinax.types.periods import PERIOD_TYPES, validate, parse, get_period, period_for_date, period_range, period_display, period_start_end
 
 
 class ValueTypesTests(TestCase):
