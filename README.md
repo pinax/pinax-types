@@ -11,6 +11,19 @@
 [![](http://slack.pinaxproject.com/badge.svg)](http://slack.pinaxproject.com/)
 [![](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
+## Table of Contents
+
+* [About Pinax](#about-pinax)
+* [Overview](#overview)
+  * [Supported Django and Python versions](#supported-django-and-python-versions)
+* [Documentation](#documentation)
+  * [Installation](#installation)
+* [Change Log](#change-log)
+* [Contribute](#contribute)
+* [Code of Conduct](#code-of-conduct)
+* [Connect with Pinax](#connect-with-pinax)
+* [License](#license)
+
 ## About Pinax
 
 Pinax is an open-source platform built on the Django Web Framework. It is an ecosystem of reusable
