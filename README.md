@@ -49,7 +49,18 @@ Add `pinax.types` to your `INSTALLED_APPS` setting:
         ...
     )
     
-    
+   
+## Change Log   
+   
+### 1.0.0
+
+* Add Django 2.0 compatibility testing
+* Drop Django 1.8, 1.9, 1.10, and Python 3.3 support
+* Convert CI and coverage to CircleCi and CodeCov
+* Add PyPi-compatible long description
+* Move documentation to README.md
+
+
 ## Contribute
 
 For an overview on how contributing to Pinax works read this [blog post](http://blog.pinaxproject.com/2016/02/26/recap-february-pinax-hangout/)
