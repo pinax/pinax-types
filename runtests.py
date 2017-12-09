@@ -23,7 +23,6 @@ DEFAULT_SETTINGS = dict(
     },
     SITE_ID=1,
     MIDDLEWARE_CLASSES=[],
-    ROOT_URLCONF="pinax.types.tests.urls",
     SECRET_KEY="notasecret",
 )
 
