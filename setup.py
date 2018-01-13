@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 LONG_DESCRIPTION = """
-.. image:: http://pinaxproject.com/pinax-design/patches/pinax-blank.svg
+.. image:: http://pinaxproject.com/pinax-design/patches/pinax-types.svg
     :target: https://pypi.python.org/pypi/pinax-types/
 ===================
 Pinax Notifications
