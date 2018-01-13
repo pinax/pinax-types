@@ -1,3 +1,5 @@
+![](http://pinaxproject.com/pinax-design/patches/pinax-types.svg)
+
 # Pinax Types
 
 [![](https://img.shields.io/pypi/v/pinax-types.svg)](https://pypi.python.org/pypi/pinax-types/)
