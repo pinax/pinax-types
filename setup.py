@@ -5,9 +5,9 @@ LONG_DESCRIPTION = """
 .. image:: http://pinaxproject.com/pinax-design/patches/pinax-types.svg
     :target: https://pypi.python.org/pypi/pinax-types/
     
-===================
-Pinax Notifications
-===================
+===========
+Pinax Types
+===========
 
 .. image:: https://img.shields.io/pypi/v/pinax-types.svg
     :target: https://pypi.python.org/pypi/pinax-types/
