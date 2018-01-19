@@ -3,9 +3,11 @@ from setuptools import find_packages, setup
 LONG_DESCRIPTION = """
 .. image:: http://pinaxproject.com/pinax-design/patches/pinax-types.svg
     :target: https://pypi.python.org/pypi/pinax-types/
+    
 ===================
 Pinax Notifications
 ===================
+
 .. image:: https://img.shields.io/pypi/v/pinax-types.svg
     :target: https://pypi.python.org/pypi/pinax-types/
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
@@ -22,14 +24,6 @@ Pinax Notifications
     :target: https://github.com/pinax/pinax-types/pulls?q=is%3Apr+is%3Aclosed
 .. image:: http://slack.pinaxproject.com/badge.svg
     :target: http://slack.pinaxproject.com/
-
-``pinax-app`` is a useful app for the Django web framework.
- 
-``pinax-app`` does this and that.
-
-Features
---------
-* Good helpful stuff 
 
 Supported Django and Python Versions
 ------------------------------------
