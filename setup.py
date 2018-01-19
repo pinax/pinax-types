@@ -10,8 +10,9 @@ Pinax Notifications
 
 .. image:: https://img.shields.io/pypi/v/pinax-types.svg
     :target: https://pypi.python.org/pypi/pinax-types/
-.. image:: https://img.shields.io/badge/license-MIT-blue.svg
-    :target: https://pypi.python.org/pypi/pinax-types/
+
+\ 
+
 .. image:: https://img.shields.io/circleci/project/github/pinax/pinax-types.svg
     :target: https://circleci.com/gh/pinax/pinax-types
 .. image:: https://img.shields.io/codecov/c/github/pinax/pinax-types.svg
@@ -22,8 +23,15 @@ Pinax Notifications
     :target: https://github.com/pinax/pinax-types/pulls
 .. image:: https://img.shields.io/github/issues-pr-closed/pinax/pinax-types.svg
     :target: https://github.com/pinax/pinax-types/pulls?q=is%3Apr+is%3Aclosed
+
+\ 
+
 .. image:: http://slack.pinaxproject.com/badge.svg
     :target: http://slack.pinaxproject.com/
+.. image:: https://img.shields.io/badge/license-MIT-blue.svg
+    :target: https://opensource.org/licenses/MIT/
+
+\ 
 
 Supported Django and Python Versions
 ------------------------------------
