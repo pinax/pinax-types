@@ -55,16 +55,19 @@ We recently did a Pinax Hangout on ``pinax-types``, you can read the recap blog 
 
 To install pinax-types:
 
+```shell
     $ pip install python-dateutil pinax-types
+```
 
 Add `pinax.types` to your `INSTALLED_APPS` setting:
 
+```python
     INSTALLED_APPS = (
         ...
         "pinax.types",
         ...
     )
-    
+```
    
 ## Change Log   
    
