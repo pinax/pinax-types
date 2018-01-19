@@ -13,6 +13,7 @@
 [![](http://slack.pinaxproject.com/badge.svg)](http://slack.pinaxproject.com/)
 [![](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
+
 ## Table of Contents
 
 * [About Pinax](#about-pinax)
@@ -25,6 +26,7 @@
 * [Code of Conduct](#code-of-conduct)
 * [Connect with Pinax](#connect-with-pinax)
 * [License](#license)
+
 
 ## About Pinax
 
@@ -48,7 +50,6 @@ Django \ Python | 2.7 | 3.4 | 3.5 | 3.6
 
 The ``pinax-types`` documentation is currently under construction. If you would like to help us write documentation, please join our Pinax Project Slack team and let us know! 
 We recently did a Pinax Hangout on ``pinax-types``, you can read the recap blog post and find the video here http://blog.pinaxproject.com/2016/04/28/recap-april-pinax-hangout/
-
 
 ### Installation
 
