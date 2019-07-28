@@ -60,9 +60,8 @@ Add `pinax.types` to your `INSTALLED_APPS` setting:
 
 ```python
     INSTALLED_APPS = [
-        ...
+        # other apps
         "pinax.types",
-        ...
     ]
 ```
    
