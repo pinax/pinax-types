@@ -3,23 +3,6 @@ import decimal
 from django.core.exceptions import ValidationError
 
 
-"""
-Value Types define the type a metric or indicator's values can take.
-
-While all measurement and calculated values are stored in the database as
-Decimals, the interpretation, validation and display of those values is
-determined by class methods on the Value Type classes here.
-
- * ValueType.validate(value) validates whether value is valid for this type
- * ValueType.template_name() returns the template name to use for indicators
-   of this type
- * ValueType.display() formats the value as a string appropriately
-
-VALUE_TYPES in this module maps the labels used for Value Types into the
-classes themselves.
-"""
-
-
 class IntegerValueType(object):
 
     @classmethod
