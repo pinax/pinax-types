@@ -21,6 +21,7 @@
   * [Supported Django and Python versions](#supported-django-and-python-versions)
 * [Documentation](#documentation)
   * [Installation](#installation)
+  * [Usage](#usage)
 * [Change Log](#change-log)
 * [Contribute](#contribute)
 * [Code of Conduct](#code-of-conduct)
@@ -65,6 +66,56 @@ Add `pinax.types` to your `INSTALLED_APPS` setting:
     ]
 ```
    
+### Usage
+
+#### Value Types
+
+Value Types define the type a metric or indicator's values can take.
+
+While all measurement and calculated values are stored in the database as
+Decimals, the interpretation, validation and display of those values is
+determined by class methods on the Value Type classes here.
+
+ * ValueType.validate(value) validates whether value is valid for this type
+ * ValueType.template_name() returns the template name to use for indicators
+   of this type
+ * ValueType.display() formats the value as a string appropriately
+
+VALUE_TYPES in this module maps the labels used for Value Types into the
+classes themselves.
+
+#### Period Types
+
+Period Types define different periods over which metrics can apply, e.g. weeks,
+months or quarters.
+
+ * PeriodType.validate(period) validates whether a string representation is
+   valid for this period type
+ * PeriodType.for_date(date) converts a datetime.date to the string
+   representation for the period included by that date
+ * PeriodType.start_end(period) returns a tuple of start date and end date for
+   the given period
+ * PeriodType.range(start, end) yields the periods from start to (but not
+   including) stop. For example, period_range("Y-2010", "Y-2013") will yield
+   "Y-2010", "Y-2011", "Y-2012".
+ * PeriodType.display(period) displays the given period in a human-readable
+   format
+
+PERIOD_TYPES in this module maps the labels used for Period Types into the
+classes themselves.
+
+There are helper functions which dispatch to the right PeriodType for a given
+period and call a class method on them:
+
+ * period_start_end(period)
+ * period_range(start, stop)
+ * period_display(period)
+
+There is also a helper function period_for_date which takes a period type name
+like "weekly" and returns the period of the given date (or today if no date
+given).
+
+
 ## Change Log   
    
 ### 1.0.0
