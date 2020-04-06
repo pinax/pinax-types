@@ -12,7 +12,7 @@ from pinax.types.periods import (
     period_for_date,
     period_range,
     period_start_end,
-    validate
+    validate,
 )
 from pinax.types.values import VALUE_TYPES
 

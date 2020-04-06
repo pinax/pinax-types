@@ -174,7 +174,6 @@ class WeeklyPeriod(Period):
             if week == weeks_in_year + 1:
                 week = 1
                 year += 1
-        raise StopIteration()
 
     @classmethod
     def display(cls, period):
@@ -227,7 +226,6 @@ class QuarterlyPeriod(Period):
             if quarter == 5:
                 quarter = 1
                 year += 1
-        raise StopIteration()
 
     @classmethod
     def display(cls, period):
@@ -274,7 +272,6 @@ class MonthlyPeriod(Period):
             if month == 13:
                 month = 1
                 year += 1
-        raise StopIteration()
 
     @classmethod
     def display(cls, period):
@@ -311,7 +308,6 @@ class YearlyPeriod(Period):
         while op(year, year_stop):
             yield "{}-{:d}".format(cls.prefix, year)
             year += 1
-        raise StopIteration()
 
     @classmethod
     def display(cls, period):
