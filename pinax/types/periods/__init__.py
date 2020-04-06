@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError
 from dateutil.parser import parse as dateutil_parse
 
 
-class Period(object):  # abstract base class
+class Period:  # abstract base class
 
     prefix = None
     validation_regex = r".*"

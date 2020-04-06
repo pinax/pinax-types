@@ -3,7 +3,7 @@ import decimal
 from django.core.exceptions import ValidationError
 
 
-class IntegerValueType(object):
+class IntegerValueType:
 
     @classmethod
     def template_name(cls):
@@ -19,7 +19,7 @@ class IntegerValueType(object):
             )
 
 
-class BooleanValueType(object):
+class BooleanValueType:
 
     @classmethod
     def template_name(cls):
@@ -33,7 +33,7 @@ class BooleanValueType(object):
             )
 
 
-class DecimalValueType(object):
+class DecimalValueType:
 
     @classmethod
     def template_name(cls):
@@ -78,7 +78,7 @@ class HourValueType(DecimalValueType):
         return "{}h".format(value)
 
 
-class TrafficLightValueType(object):
+class TrafficLightValueType:
 
     @classmethod
     def validate(cls, value):
