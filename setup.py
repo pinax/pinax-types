@@ -4,7 +4,7 @@ VERSION = "1.0.0"
 LONG_DESCRIPTION = """
 .. image:: http://pinaxproject.com/pinax-design/patches/pinax-types.svg
     :target: https://pypi.python.org/pypi/pinax-types/
-    
+
 ===========
 Pinax Types
 ===========
@@ -12,7 +12,7 @@ Pinax Types
 .. image:: https://img.shields.io/pypi/v/pinax-types.svg
     :target: https://pypi.python.org/pypi/pinax-types/
 
-\ 
+\
 
 .. image:: https://img.shields.io/circleci/project/github/pinax/pinax-types.svg
     :target: https://circleci.com/gh/pinax/pinax-types
@@ -25,14 +25,14 @@ Pinax Types
 .. image:: https://img.shields.io/github/issues-pr-closed/pinax/pinax-types.svg
     :target: https://github.com/pinax/pinax-types/pulls?q=is%3Apr+is%3Aclosed
 
-\ 
+\
 
 .. image:: http://slack.pinaxproject.com/badge.svg
     :target: http://slack.pinaxproject.com/
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
     :target: https://opensource.org/licenses/MIT/
 
-\ 
+\
 
 Supported Django and Python Versions
 ------------------------------------
@@ -63,7 +63,7 @@ setup(
     tests_require=[
         "python-dateutil>=2.4.0"
     ],
-    install_required=[
+    install_requires=[
         "python-dateutil>=2.4.0"
     ],
     classifiers=[
