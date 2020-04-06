@@ -29,10 +29,10 @@ class PeriodField(models.CharField):
 
     def __init__(self, *args, **kwargs):
         kwargs["max_length"] = 12
-        super(PeriodField, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def deconstruct(self):
-        name, path, args, kwargs = super(PeriodField, self).deconstruct()
+        name, path, args, kwargs = super().deconstruct()
         del kwargs["max_length"]
         return name, path, args, kwargs
 
@@ -47,7 +47,7 @@ class PeriodField(models.CharField):
         return get_period(value)
 
     def get_prep_value(self, value):
-        value = super(PeriodField, self).get_prep_value(value)
+        value = super().get_prep_value(value)
         if isinstance(value, Period):
             value = value.raw_value
         return value
@@ -63,7 +63,7 @@ class PeriodField(models.CharField):
             if callable(self.default):
                 return self.default()
             return get_period(self.default)
-        return super(PeriodField, self).get_default()
+        return super().get_default()
 
     def formfield(self, **kwargs):
         defaults = {
@@ -71,4 +71,4 @@ class PeriodField(models.CharField):
             "help_text": "Enter a weekly, monthly, quarterly, or yearly period (e.g. 2015-W03, Jan 2015, 1/2015, January 2015, 2015Q1, 2015)"  # noqa
         }
         defaults.update(kwargs)
-        return super(PeriodField, self).formfield(**defaults)
+        return super().formfield(**defaults)
