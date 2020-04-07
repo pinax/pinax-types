@@ -18,7 +18,7 @@
 
 * [About Pinax](#about-pinax)
 * [Overview](#overview)
-  * [Supported Django and Python versions](#supported-django-and-python-versions)
+  * [Supported Django and Python Versions](#supported-django-and-python-versions)
 * [Documentation](#documentation)
   * [Installation](#installation)
   * [Usage](#usage)
@@ -65,7 +65,7 @@ Add `pinax.types` to your `INSTALLED_APPS` setting:
         "pinax.types",
     ]
 ```
-   
+
 ### Usage
 
 #### Value Types
@@ -117,7 +117,7 @@ given).
 
 
 ## Change Log   
-   
+
 ### 1.0.0
 
 * Add Django 2.0 compatibility testing
