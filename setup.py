@@ -61,10 +61,10 @@ setup(
     },
     test_suite="runtests.runtests",
     tests_require=[
-        "python-dateutil>=2.4.0"
+        "python-dateutil>=2.8.1"
     ],
     install_requires=[
-        "python-dateutil>=2.4.0"
+        "python-dateutil>=2.8.1"
     ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
