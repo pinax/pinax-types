@@ -15,7 +15,7 @@ class IntegerValueType:
             int(value)
         except ValueError:
             raise ValidationError(
-                "Incorrect integer value: {0}".format(value)
+                f"Incorrect integer value: {value}"
             )
 
 
@@ -29,7 +29,7 @@ class BooleanValueType:
     def validate(cls, value):
         if value not in ["true", "false"]:
             raise ValidationError(
-                "Incorrect boolean value: {0}".format(value)
+                f"Incorrect boolean value: {value}"
             )
 
 
@@ -45,7 +45,7 @@ class DecimalValueType:
             decimal.Decimal(value)
         except (ValueError, decimal.InvalidOperation):
             raise ValidationError(
-                "Incorrect decimal.Decimal value: {0}".format(value)
+                f"Incorrect decimal.Decimal value: {value}"
             )
 
 
@@ -64,7 +64,7 @@ class MonetaryValueType(DecimalValueType):
 
     @classmethod
     def display(cls, value):
-        return "${:,}".format(value)
+        return f"${value:,}"
 
 
 class HourValueType(DecimalValueType):
@@ -75,7 +75,7 @@ class HourValueType(DecimalValueType):
 
     @classmethod
     def display(cls, value):
-        return "{}h".format(value)
+        return f"{value}h"
 
 
 class TrafficLightValueType:
@@ -85,11 +85,11 @@ class TrafficLightValueType:
         try:
             if int(value) not in [1, 2, 3]:
                 raise ValidationError(
-                    "Incorrect traffic-light value: {0}".format(value)
+                    f"Incorrect traffic-light value: {value}"
                 )
         except ValueError:
             raise ValidationError(
-                "Incorrect traffic-light value: {0}".format(value)
+                f"Incorrect traffic-light value: {value}"
             )
 
     @classmethod
