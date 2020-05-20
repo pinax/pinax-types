@@ -17,8 +17,9 @@
 ## Table of Contents
 
 * [About Pinax](#about-pinax)
+* [Important Links](#important-links)
 * [Overview](#overview)
-  * [Supported Django and Python versions](#supported-django-and-python-versions)
+  * [Supported Django and Python Versions](#supported-django-and-python-versions)
 * [Documentation](#documentation)
   * [Installation](#installation)
   * [Usage](#usage)
@@ -31,20 +32,30 @@
 
 ## About Pinax
 
-Pinax is an open-source platform built on the Django Web Framework. It is an ecosystem of reusable
-Django apps, themes, and starter project templates. This collection can be found at http://pinaxproject.com.
+Pinax is an open-source platform built on the Django Web Framework. It is an ecosystem of reusable Django apps, themes, and starter project templates. This collection can be found at http://pinaxproject.com.
+
+
+## Important Links
+
+Where you can find what you need:
+* Releases: published to [PyPI](https://pypi.org/search/?q=pinax) or tagged in app repos in the [Pinax GitHub organization](https://github.com/pinax/)
+* Global documentation: [Pinax documentation website](https://pinaxproject.com/pinax/)
+* App specific documentation: app repos in the [Pinax GitHub organization](https://github.com/pinax/)
+* Support information: [SUPPORT.md](https://github.com/pinax/.github/blob/master/SUPPORT.md) file in the [Pinax default community health file repo](https://github.com/pinax/.github/)
+* Contributing information: [CONTRIBUTING.md](https://github.com/pinax/.github/blob/master/CONTRIBUTING.md) file in the [Pinax default community health file repo](https://github.com/pinax/.github/)
+* Current and historical release docs: [Pinax Wiki](https://github.com/pinax/pinax/wiki/)
 
 
 ## pinax-types
 
 ### Overview
 
-#### Supported Django and Python versions
+#### Supported Django and Python Versions
 
-Django \ Python | 2.7 | 3.4 | 3.5 | 3.6
---------------- | --- | --- | --- | ---
-1.11 |  *  |  *  |  *  |  *  
-2.0  |     |  *  |  *  |  *
+Django / Python | 3.6 | 3.7 | 3.8
+--------------- | --- | --- | ---
+2.2  |  *  |  *  |  *
+3.0  |  *  |  *  |  *
 
 
 ## Documentation
@@ -65,7 +76,7 @@ Add `pinax.types` to your `INSTALLED_APPS` setting:
         "pinax.types",
     ]
 ```
-   
+
 ### Usage
 
 #### Value Types
@@ -76,12 +87,12 @@ While all measurement and calculated values are stored in the database as
 Decimals, the interpretation, validation and display of those values is
 determined by class methods on the Value Type classes here.
 
- * ValueType.validate(value) validates whether value is valid for this type
- * ValueType.template_name() returns the template name to use for indicators
+ * `ValueType.validate(value)` validates whether value is valid for this type
+ * `ValueType.template_name()` returns the template name to use for indicators
    of this type
- * ValueType.display() formats the value as a string appropriately
+ * `ValueType.display()` formats the value as a string appropriately
 
-VALUE_TYPES in this module maps the labels used for Value Types into the
+`VALUE_TYPES` in this module maps the labels used for Value Types into the
 classes themselves.
 
 #### Period Types
@@ -89,35 +100,42 @@ classes themselves.
 Period Types define different periods over which metrics can apply, e.g. weeks,
 months or quarters.
 
- * PeriodType.validate(period) validates whether a string representation is
+ * `PeriodType.validate(period)` validates whether a string representation is
    valid for this period type
- * PeriodType.for_date(date) converts a datetime.date to the string
+ * `PeriodType.for_date(date)` converts a `datetime.date` to the string
    representation for the period included by that date
- * PeriodType.start_end(period) returns a tuple of start date and end date for
+ * `PeriodType.start_end(period)` returns a tuple of start date and end date for
    the given period
- * PeriodType.range(start, end) yields the periods from start to (but not
-   including) stop. For example, period_range("Y-2010", "Y-2013") will yield
-   "Y-2010", "Y-2011", "Y-2012".
- * PeriodType.display(period) displays the given period in a human-readable
+ * `PeriodType.range(start, end)` yields the periods from start to (but not
+   including) stop. For example, `period_range("Y-2010", "Y-2013")` will yield
+   `"Y-2010", "Y-2011", "Y-2012"`.
+ * `PeriodType.display(period)` displays the given period in a human-readable
    format
 
-PERIOD_TYPES in this module maps the labels used for Period Types into the
+`PERIOD_TYPES` in this module maps the labels used for Period Types into the
 classes themselves.
 
-There are helper functions which dispatch to the right PeriodType for a given
+There are helper functions which dispatch to the right `PeriodType` for a given
 period and call a class method on them:
 
- * period_start_end(period)
- * period_range(start, stop)
- * period_display(period)
+ * `period_start_end(period)`
+ * `period_range(start, stop)`
+ * `period_display(period)`
 
-There is also a helper function period_for_date which takes a period type name
+There is also a helper function `period_for_date` which takes a period type name
 like "weekly" and returns the period of the given date (or today if no date
 given).
 
 
-## Change Log   
-   
+## Change Log
+
+### 2.0.0
+
+* Drop Django 1.11, 2.0, and 2.1, and Python 2,7, 3.4, and 3.5 support
+* Add Django 2.2 and 3.0, and Python 3.6, 3.7, and 3.8 support
+* Update packaging configs
+* Direct users to community resources
+
 ### 1.0.0
 
 * Add Django 2.0 compatibility testing
@@ -129,31 +147,19 @@ given).
 
 ## Contribute
 
-For an overview on how contributing to Pinax works read this [blog post](http://blog.pinaxproject.com/2016/02/26/recap-february-pinax-hangout/)
-and watch the included video, or read our [How to Contribute](http://pinaxproject.com/pinax/how_to_contribute/) section.
-For concrete contribution ideas, please see our
-[Ways to Contribute/What We Need Help With](http://pinaxproject.com/pinax/ways_to_contribute/) section.
-
-In case of any questions we recommend you join our [Pinax Slack team](http://slack.pinaxproject.com)
-and ping us there instead of creating an issue on GitHub. Creating issues on GitHub is of course
-also valid but we are usually able to help you faster if you ping us in Slack.
-
-We also highly recommend reading our blog post on [Open Source and Self-Care](http://blog.pinaxproject.com/2016/01/19/open-source-and-self-care/).
+[Contributing](https://github.com/pinax/.github/blob/master/CONTRIBUTING.md) information can be found in the [Pinax community health file repo](https://github.com/pinax/.github).
 
 
 ## Code of Conduct
 
-In order to foster a kind, inclusive, and harassment-free community, the Pinax Project
-has a [code of conduct](http://pinaxproject.com/pinax/code_of_conduct/).
-We ask you to treat everyone as a smart human programmer that shares an interest in Python, Django, and Pinax with you.
+In order to foster a kind, inclusive, and harassment-free community, the Pinax Project has a [Code of Conduct](https://github.com/pinax/.github/blob/master/CODE_OF_CONDUCT.md). We ask you to treat everyone as a smart human programmer that shares an interest in Python, Django, and Pinax with you.
 
 
 ## Connect with Pinax
 
-For updates and news regarding the Pinax Project, please follow us on Twitter [@pinaxproject](https://twitter.com/pinaxproject)
-and check out our [Pinax Project blog](http://blog.pinaxproject.com).
+For updates and news regarding the Pinax Project, please follow us on Twitter [@pinaxproject](https://twitter.com/pinaxproject) and check out our [Pinax Project blog](http://blog.pinaxproject.com).
 
 
 ## License
 
-Copyright (c) 2012-2019 James Tauber and contributors under the [MIT license](https://opensource.org/licenses/MIT).
+Copyright (c) 2012-present James Tauber and contributors under the [MIT license](https://opensource.org/licenses/MIT).

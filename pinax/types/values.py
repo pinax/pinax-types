@@ -3,7 +3,7 @@ import decimal
 from django.core.exceptions import ValidationError
 
 
-class IntegerValueType(object):
+class IntegerValueType:
 
     @classmethod
     def template_name(cls):
@@ -15,11 +15,11 @@ class IntegerValueType(object):
             int(value)
         except ValueError:
             raise ValidationError(
-                "Incorrect integer value: {0}".format(value)
+                f"Incorrect integer value: {value}"
             )
 
 
-class BooleanValueType(object):
+class BooleanValueType:
 
     @classmethod
     def template_name(cls):
@@ -29,11 +29,11 @@ class BooleanValueType(object):
     def validate(cls, value):
         if value not in ["true", "false"]:
             raise ValidationError(
-                "Incorrect boolean value: {0}".format(value)
+                f"Incorrect boolean value: {value}"
             )
 
 
-class DecimalValueType(object):
+class DecimalValueType:
 
     @classmethod
     def template_name(cls):
@@ -45,7 +45,7 @@ class DecimalValueType(object):
             decimal.Decimal(value)
         except (ValueError, decimal.InvalidOperation):
             raise ValidationError(
-                "Incorrect decimal.Decimal value: {0}".format(value)
+                f"Incorrect decimal.Decimal value: {value}"
             )
 
 
@@ -64,7 +64,7 @@ class MonetaryValueType(DecimalValueType):
 
     @classmethod
     def display(cls, value):
-        return "${:,}".format(value)
+        return f"${value:,}"
 
 
 class HourValueType(DecimalValueType):
@@ -75,21 +75,21 @@ class HourValueType(DecimalValueType):
 
     @classmethod
     def display(cls, value):
-        return "{}h".format(value)
+        return f"{value}h"
 
 
-class TrafficLightValueType(object):
+class TrafficLightValueType:
 
     @classmethod
     def validate(cls, value):
         try:
             if int(value) not in [1, 2, 3]:
                 raise ValidationError(
-                    "Incorrect traffic-light value: {0}".format(value)
+                    f"Incorrect traffic-light value: {value}"
                 )
         except ValueError:
             raise ValidationError(
-                "Incorrect traffic-light value: {0}".format(value)
+                f"Incorrect traffic-light value: {value}"
             )
 
     @classmethod

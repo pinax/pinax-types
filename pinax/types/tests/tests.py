@@ -12,7 +12,7 @@ from pinax.types.periods import (
     period_for_date,
     period_range,
     period_start_end,
-    validate
+    validate,
 )
 from pinax.types.values import VALUE_TYPES
 
@@ -378,7 +378,7 @@ class PeriodTests(TestCase):
         self.assertEquals(period_for_date("yearly", datetime.date(2013, 8, 7)), "Y-2013")
 
     def test_period_for_date_today(self):
-        self.assertEquals(period_for_date("yearly"), "Y-{}".format(datetime.date.today().year))
+        self.assertEquals(period_for_date("yearly"), f"Y-{datetime.date.today().year}")
 
     def test_weekly_period_range(self):
         self.assertEquals(list(period_range("W-2012-50", "W-2013-03")), ["W-2012-50", "W-2012-51", "W-2012-52", "W-2013-01", "W-2013-02"])

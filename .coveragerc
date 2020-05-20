@@ -1,7 +1,0 @@
-[run]
-source = pinax
-omit = pinax/types/tests/*,pinax/types/admin.py
-branch = 1
-
-[report]
-omit = pinax/types/tests/*,pinax/types/admin.py

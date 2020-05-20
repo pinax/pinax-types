@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError
 from dateutil.parser import parse as dateutil_parse
 
 
-class Period(object):  # abstract base class
+class Period:  # abstract base class
 
     prefix = None
     validation_regex = r".*"
@@ -91,21 +91,21 @@ class Period(object):  # abstract base class
 
     @classmethod
     def validate(cls, period):
-        regex = "^{}-".format(cls.prefix) + cls.validation_regex
+        regex = f"^{cls.prefix}-" + cls.validation_regex
         match = re.match(regex, period)
         if not match:
             raise ValidationError(
-                "Incorrect value: {0}".format(period)
+                f"Incorrect value: {period}"
             )
         if match.groups():
             part = int(match.groups()[0])
             if cls.minimum and part < cls.minimum:
                 raise ValidationError(
-                    "Incorrect value: {0}".format(period)
+                    f"Incorrect value: {period}"
                 )
             if cls.maximum and part > cls.maximum:
                 raise ValidationError(
-                    "Incorrect value: {0}".format(period)
+                    f"Incorrect value: {period}"
                 )
 
     def __eq__(self, other):
@@ -165,7 +165,7 @@ class WeeklyPeriod(Period):
         week = week_start
         op = operator.le if inclusive else operator.lt
         while op((year, week), (year_stop, week_stop)):
-            yield "{}-{:d}-{:02d}".format(cls.prefix, year, week)
+            yield f"{cls.prefix}-{year:d}-{week:02d}"
             week += 1
             if datetime.date(year, 12, 31).isocalendar()[1] == 53:
                 weeks_in_year = 53
@@ -174,7 +174,6 @@ class WeeklyPeriod(Period):
             if week == weeks_in_year + 1:
                 week = 1
                 year += 1
-        raise StopIteration()
 
     @classmethod
     def display(cls, period):
@@ -222,18 +221,17 @@ class QuarterlyPeriod(Period):
         quarter = quarter_start
         op = operator.le if inclusive else operator.lt
         while op((year, quarter), (year_stop, quarter_stop)):
-            yield "{}-{:d}-{:d}".format(cls.prefix, year, quarter)
+            yield f"{cls.prefix}-{year:d}-{quarter:d}"
             quarter += 1
             if quarter == 5:
                 quarter = 1
                 year += 1
-        raise StopIteration()
 
     @classmethod
     def display(cls, period):
         year = int(period[2:6])
         quarter = int(period[7])
-        return "{}Q{}".format(year, quarter)
+        return f"{year}Q{quarter}"
 
 
 class MonthlyPeriod(Period):
@@ -246,7 +244,7 @@ class MonthlyPeriod(Period):
 
     @classmethod
     def for_date(cls, date):
-        return "{}-{:d}-{:02d}".format(cls.prefix, date.year, date.month)
+        return f"{cls.prefix}-{date.year:d}-{date.month:02d}"
 
     @classmethod
     def start_end(cls, period):
@@ -269,12 +267,11 @@ class MonthlyPeriod(Period):
         month = month_start
         op = operator.le if inclusive else operator.lt
         while op((year, month), (year_stop, month_stop)):
-            yield "{}-{:d}-{:02d}".format(cls.prefix, year, month)
+            yield f"{cls.prefix}-{year:d}-{month:02d}"
             month += 1
             if month == 13:
                 month = 1
                 year += 1
-        raise StopIteration()
 
     @classmethod
     def display(cls, period):
@@ -291,7 +288,7 @@ class YearlyPeriod(Period):
 
     @classmethod
     def for_date(cls, date):
-        return "{}-{:d}".format(cls.prefix, date.year)
+        return f"{cls.prefix}-{date.year:d}"
 
     @classmethod
     def start_end(cls, period):
@@ -309,14 +306,13 @@ class YearlyPeriod(Period):
         year = year_start
         op = operator.le if inclusive else operator.lt
         while op(year, year_stop):
-            yield "{}-{:d}".format(cls.prefix, year)
+            yield f"{cls.prefix}-{year:d}"
             year += 1
-        raise StopIteration()
 
     @classmethod
     def display(cls, period):
         year = int(period[2:])
-        return "{}".format(year)
+        return f"{year}"
 
 
 PREFIXES = {
@@ -376,13 +372,13 @@ def parse(value):
 
 def validate(raw_value):
     if raw_value[0] not in PERIOD_PREFIXES:
-        raise ValidationError("invalid prefix in {}".format(raw_value))
+        raise ValidationError(f"invalid prefix in {raw_value}")
     return PERIOD_PREFIXES[raw_value[0]].validate(raw_value)
 
 
 def get_period(raw_value):
     if raw_value[0] not in PERIOD_PREFIXES:
-        raise ValidationError("invalid prefix in {}".format(raw_value))
+        raise ValidationError(f"invalid prefix in {raw_value}")
     return PERIOD_PREFIXES[raw_value[0]](raw_value)
 
 
