@@ -37,13 +37,15 @@ Pinax Types
 Supported Django and Python Versions
 ------------------------------------
 
-+-----------------+-----+-----+-----+
-| Django / Python | 3.6 | 3.7 | 3.8 |
-+=================+=====+=====+=====+
-|  2.2            |  *  |  *  |  *  |
-+-----------------+-----+-----+-----+
-|  3.0            |  *  |  *  |  *  |
-+-----------------+-----+-----+-----+
++-----------------+-----+-----+-----+-----+
+| Django / Python | 3.6 | 3.7 | 3.8 | 3.9 |
++=================+=====+=====+=====+=====+
+|  2.2            |  *  |  *  |  *  |  *  |
++-----------------+-----+-----+-----+=====+
+|  3.1            |  *  |  *  |  *  |  *  |
++-----------------+-----+-----+-----+=====+
+|  3.2            |  *  |  *  |  *  |  *  |
++-----------------+-----+-----+-----+-----+
 """
 
 setup(
@@ -72,7 +74,8 @@ setup(
         "Environment :: Web Environment",
         "Framework :: Django",
         "Framework :: Django :: 2.2",
-        "Framework :: Django :: 3.0",
+        "Framework :: Django :: 3.1",
+        "Framework :: Django :: 3.2",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
@@ -81,6 +84,7 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     zip_safe=False
